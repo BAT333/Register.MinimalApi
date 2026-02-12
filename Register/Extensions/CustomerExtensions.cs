@@ -15,14 +15,14 @@ namespace Register.Extensions
 
             group.MapGet("/", ([FromServices] CustomerService service, [FromQuery] int skip = 0, [FromQuery] int take = 10) =>
             {
-                var test = service.Get(skip, take);
+                var customers = service.Get(skip, take);
 
-                return Results.Ok(test);
+                return Results.Ok(customers);
             });
             group.MapGet("/{id:int}", ([FromServices] CustomerService service, int id) =>
             {
-                var tes = service.GetById(id);
-                if (tes != null) return Results.Ok(tes);
+                var customer = service.GetById(id);
+                if (customer != null) return Results.Ok(customer);
                 return Results.NotFound();
 
             }).WithName("GetById");
@@ -36,24 +36,24 @@ namespace Register.Extensions
 
             group.MapPut("/{id:int}", ([FromServices] CustomerService service, int id, [FromBody] PutCustomerDto dto) =>
             {
-                var test = service.Put(id, dto);
-                if (test) return Results.NoContent();
+                var customer = service.Put(id, dto);
+                if (customer) return Results.NoContent();
                 return Results.BadRequest();
 
             });
             group.MapPatch("/{id:int}", ([FromServices] CustomerService service, int id, [FromBody] PatchCustomerDto dto) =>
             {
 
-                var test = service.Patch(id, dto);
-                if (test) return Results.NoContent();
+                var customer = service.Patch(id, dto);
+                if (customer) return Results.NoContent();
                 return Results.BadRequest();
 
             });
             group.MapDelete("/{id:int}", ([FromServices] CustomerService service, int id) =>
             {
-                var tast = service.Delete(id);
+                var customer = service.Delete(id);
 
-                if (tast) return Results.NoContent();
+                if (customer) return Results.NoContent();
 
                 return Results.BadRequest();
 
