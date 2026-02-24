@@ -12,13 +12,17 @@ namespace Register.Services
         {
             _context = context;
         }
-        internal List<ReadCustomerDto> Get(int skip, int take)
+        internal PaginationResponseDTO<ReadCustomerDto> Get(int skip, int take)
         {
             skip = Math.Max(skip, 0);
             take = Math.Clamp(take, 0, 100);
-            return this._context.customers.Select(customer => new ReadCustomerDto(customer.Id, customer.Name, customer.Description, customer.CreatedDate)
+            int total = 0;
+            var customers = this._context.customers.ToList();
+            total = customers.Count();
+            var Items  = customers.Select(customer => new ReadCustomerDto(customer.Id, customer.Name, customer.Description, customer.CreatedDate)
                 ).Skip(skip).Take(take).ToList();
 
+            return new PaginationResponseDTO<ReadCustomerDto>(total, Items);
         }
 
         internal bool Delete(int id)

@@ -26,7 +26,21 @@ builder.Services.AddDbContext<RegisterContext>(
 
 builder.Services.AddScoped<CustomerService>();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Mypolicy", policy =>
+    {
+        policy.WithOrigins("https://localhost:7197") 
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
+
+app.UseHttpsRedirection();
+app.UseCors("Mypolicy");
 
 app.AddEndPointsCustomer();
 
