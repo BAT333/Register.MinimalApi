@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Register.Context;
 using Register.Extensions;
+using Register.Model;
 using Register.Services;
 using System.Text.Json.Serialization;
 
@@ -37,14 +38,24 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services
+    .AddIdentityApiEndpoints<CustomerAccessAuth>()
+    .AddEntityFrameworkStores<RegisterContext>();
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseCors("Mypolicy");
 
+app.UseAuthorization();
+
 app.AddEndPointsCustomer();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.MapGroup("auth").MapIdentityApi<CustomerAccessAuth>().WithTags("access");
 
 app.Run();

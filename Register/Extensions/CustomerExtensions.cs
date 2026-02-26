@@ -11,7 +11,8 @@ namespace Register.Extensions
         public static void AddEndPointsCustomer(this WebApplication app)
         {
 
-            var group = app.MapGroup("/customer");
+            var group = app.MapGroup("/customer")
+                .RequireAuthorization().WithTags("register");
 
             group.MapGet("/", ([FromServices] CustomerService service, [FromQuery] int skip = 0, [FromQuery] int take = 10) =>
             {

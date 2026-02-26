@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Register.Model;
 
 namespace Register.Context
 {
-    public class RegisterContext : DbContext
+    public class RegisterContext : IdentityDbContext<CustomerAccessAuth,CustomerAccessProfile,int>
     {
         public RegisterContext(DbContextOptions<RegisterContext> options) : base(options) { }
 
