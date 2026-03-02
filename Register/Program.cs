@@ -33,9 +33,14 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Mypolicy", policy =>
     {
         policy.WithOrigins("https://localhost:7197") 
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials();
     });
+});
+builder.Services.ConfigureApplicationCookie(options => {
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
 builder.Services
@@ -49,6 +54,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors("Mypolicy");
 
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.AddEndPointsCustomer();
