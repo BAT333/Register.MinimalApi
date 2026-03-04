@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Register.Context;
 using Register.Extensions;
@@ -63,5 +65,12 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.MapGroup("auth").MapIdentityApi<CustomerAccessAuth>().WithTags("access");
+
+app.MapPost("auth/logout", async ([FromServices] SignInManager<CustomerAccessAuth> signInManager) =>
+{
+    await signInManager.SignOutAsync();
+
+    return Results.Ok();
+}).RequireAuthorization().WithTags("access");
 
 app.Run();
